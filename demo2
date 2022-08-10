@@ -1,0 +1,69 @@
+-------------------------------------------------------------------
+-- WARM UPS: Type the following commands to build muscle memory. --
+-------------------------------------------------------------------
+-- 1. [Join]: select name, email from purchases join users on purchases.user_id = users.id
+-- select name, email from purchases join users on purchases.user_id = users.user_id
+-- 2. [Same join using aliases]: select name, email from users as u join purchases as p on p.user_id=u.id
+-- 3. [Using alias in filter]: select name, email from users as u join purchases as p on p.user_id=u.id where u.email like '%gmail.com'
+--------------------------------------------------------
+-- EXERCISES: Answer using the techniques from above. --
+--------------------------------------------------------
+-- 1. Join the purchases and purchase_items tables, on purchases.id and purchase_items.purchase_id
+--select * from purchases,purchase_items where purchases.purchase_id = purchase_items.purchase_id;
+-- 2. Modify the last query, aliasing purchases as p and purchase_items as pi.
+--select * from purchases as p join purchase_items as pi on p.purchase_id = pi.purchase_id;
+-- 3. Using the same join, perform a group by to sum the total quantity of items purchased under each user_id.
+--select sum(quantity) from purchases as p join purchase_items as pi on p.purchase_id = pi.purchase_id group by user_id;
+-- 4. Using the same join, find the average purchase amount from each state.
+--select state, avg(price) from purchases as p join purchase_items as pi on p.purchase_id = pi.purchase_id group by state;
+-- 5. Join the purchases and users tables, using an alias for each table.
+--select * from purchases as p join users as u on p.user_id = u.user_id;
+-- 6. Using the above join, filter to just the orders with an Gmail email address OR a buyer named 'Clay'
+--select * from purchases as p join users as u on p.user_id = u.user_id where email like '%@gmail%' or name like '%Clay%';
+----------------------------------------
+-- EXTRA CREDIT: If you finish early. --
+----------------------------------------
+-- 1. Joins can combine more than two tables. Join the users table,  purchases table, and purchase items table. Remember to use aliases.
+--select * from purchases as p join purchase_items as pi on p.purchase_id = pi.purchase_id join users as u on p.user_id = u.user_id;
+
+-------------------------------------------------------------------
+-- WARM UPS: Type the following commands to build muscle memory. --
+-------------------------------------------------------------------
+-- 1. [Grouping by multiple columns]: SELECT state, zipcode, COUNT(id) FROM purchases GROUP BY state, zipcode;
+-- 2. [Group by using a HAVING filter]:
+-- SELECT state, COUNT(id) FROM purchases
+--                                      GROUP BY state
+--                                      HAVING COUNT(id) > 100;
+-- 3. [Multiple-value subquery]: SELECT * FROM purchases WHERE
+--            user_id IN
+--            (SELECT user_id FROM users WHERE email LIKE '%@gmail.com');
+-- 4. [Using alias in filter]: SELECT name, email FROM users AS u
+--            JOIN purchases AS p ON p.user_id=u.id
+--            WHERE u.email LIKE '%@gmail.com';
+--------------------------------------------------------
+-- EXERCISES: Answer using the techniques from above. --
+--------------------------------------------------------
+-- 1. Find the most recent purchase made by each user.
+--select user_id, max(created_at) from purchases group by user_id;
+-- 3. Find the oldest purchase made by a user with a yahoo email
+--    address.
+--select min(created_at) from purchases where user_id in (select user_id from users where email like '%yahoo%');
+-- 4. Find all the users' emails who made at least one purchase from the
+--    state of NY.
+-- SELECT email FROM users AS u JOIN purchases AS p ON p.user_id=u.user_id join purchase_items as pi on p.purchase_id = pi.purchase_id where p.state = 'NY' and pi.quantity > 0;
+----------------------------------------
+-- EXTRA CREDIT: If you finish early. --
+----------------------------------------
+-- 1. Use the DATEPART() function to find the number of users created
+--    during each day of the week.
+--    Hint: Use DW as the first input
+--SELECT DATE_PART('dow', created_at) +1, COUNT(*)
+--FROM users 
+--GROUP BY DATE_PART ('dow', created_at) +1 
+--ORDER BY 1
+
+-- 2. How about each day of the month?
+SELECT DATE_PART('d', created_at) +1, COUNT(*)
+FROM users 
+GROUP BY DATE_PART ('d', created_at) +1 
+ORDER BY 1
